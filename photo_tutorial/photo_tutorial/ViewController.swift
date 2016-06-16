@@ -7,8 +7,12 @@
 //
 
 import UIKit
+import Firebase
+import FBSDKCoreKit
+import FBSDKLoginKit
 
 class ViewController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
+    private let dataURL = "https://photo-tutorial.firebaseio.com"
     
     var imagePicker: UIImagePickerController!
 
@@ -37,6 +41,22 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
             presentViewController(imagePicker, animated: true, completion: nil)
 
         }
+    }
+    
+    @IBAction func loginWithFacebook(sender: AnyObject) {
+        let facebookLogin = FBSDKLoginManager()
+        print("Logging In")
+        facebookLogin.logInWithReadPermissions(["user_friends", "public_profile"],
+            fromViewController: self, handler:{(facebookResult, facebookError) -> Void in
+            if facebookError != nil { print("Facebook login failed. Error \(facebookError)")
+            } else if facebookResult.isCancelled { print("Facebook login was cancelled.")
+            } else {
+                let credential = FIRFacebookAuthProvider.credentialWithAccessToken(FBSDKAccessToken.currentAccessToken().tokenString)
+                FIRAuth.auth()?.signInWithCredential(credential) { (user, error) in
+                    // ...
+                }
+            }
+        });
     }
 }
 
