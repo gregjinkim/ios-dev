@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>AD_UNIT_ID_FOR_BANNER_TEST</key>
+	<string>ca-app-pub-3940256099942544/2934735716</string>
+	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
+	<string>ca-app-pub-3940256099942544/4411468910</string>
+	<key>CLIENT_ID</key>
+	<string>184516007742-uq5puev4brps2lho210ch6h79ps8nqvk.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.184516007742-uq5puev4brps2lho210ch6h79ps8nqvk</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCWM67woD2XByzqIZjXGMKChqtsbCY9BxA</string>
+	<key>GCM_SENDER_ID</key>
+	<string>184516007742</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.ioscreator.photo-tutorial</string>
+	<key>PROJECT_ID</key>
+	<string>photo-tutorial</string>
+	<key>STORAGE_BUCKET</key>
+	<string>photo-tutorial.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<true/>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false/>
+	<key>IS_APPINVITE_ENABLED</key>
+	<false/>
+	<key>IS_GCM_ENABLED</key>
+	<true/>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true/>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:184516007742:ios:5243d8241f5705c3</string>
+	<key>DATABASE_URL</key>
+	<string>https://photo-tutorial.firebaseio.com</string>
+</dict>
+</plist>

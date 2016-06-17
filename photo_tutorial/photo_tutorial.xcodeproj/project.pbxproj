@@ -8,11 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		82F9B5647C3470FC48CA1AEA /* Pods_photo_tutorial.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1A3926BF7FF1D583D2580A0 /* Pods_photo_tutorial.framework */; };
+		B87C51FF1D1490F10008F0DB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B87C51FE1D1490F10008F0DB /* GoogleService-Info.plist */; };
+		B87C52021D1493030008F0DB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B87C52001D1493030008F0DB /* LaunchScreen.storyboard */; };
 		B8CF87BF1D10AAED006BCB3D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8CF87BE1D10AAED006BCB3D /* AppDelegate.swift */; };
 		B8CF87C11D10AAED006BCB3D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8CF87C01D10AAED006BCB3D /* ViewController.swift */; };
 		B8CF87C41D10AAED006BCB3D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B8CF87C21D10AAED006BCB3D /* Main.storyboard */; };
 		B8CF87C61D10AAED006BCB3D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B8CF87C51D10AAED006BCB3D /* Assets.xcassets */; };
-		B8CF87C91D10AAED006BCB3D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B8CF87C71D10AAED006BCB3D /* LaunchScreen.storyboard */; };
 		B8CF87D41D10AAED006BCB3D /* photo_tutorialTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8CF87D31D10AAED006BCB3D /* photo_tutorialTests.swift */; };
 		D60B25310AAC006F69E716B7 /* Pods_photo_tutorialTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC6C7B8758575936274CBE16 /* Pods_photo_tutorialTests.framework */; };
 /* End PBXBuildFile section */
@@ -31,12 +32,13 @@
 		1685526262BCECEB5C6D8BF1 /* Pods-photo_tutorialTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-photo_tutorialTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-photo_tutorialTests/Pods-photo_tutorialTests.release.xcconfig"; sourceTree = "<group>"; };
 		6001A006FC822D4E6AE1B26F /* Pods-photo_tutorial.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-photo_tutorial.debug.xcconfig"; path = "Pods/Target Support Files/Pods-photo_tutorial/Pods-photo_tutorial.debug.xcconfig"; sourceTree = "<group>"; };
 		660D912EC2B347D215AFB40D /* Pods-photo_tutorial.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-photo_tutorial.release.xcconfig"; path = "Pods/Target Support Files/Pods-photo_tutorial/Pods-photo_tutorial.release.xcconfig"; sourceTree = "<group>"; };
+		B87C51FE1D1490F10008F0DB /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		B87C52011D1493030008F0DB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B8CF87BB1D10AAED006BCB3D /* photo_tutorial.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = photo_tutorial.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B8CF87BE1D10AAED006BCB3D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B8CF87C01D10AAED006BCB3D /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		B8CF87C31D10AAED006BCB3D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		B8CF87C51D10AAED006BCB3D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		B8CF87C81D10AAED006BCB3D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B8CF87CA1D10AAED006BCB3D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B8CF87CF1D10AAED006BCB3D /* photo_tutorialTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = photo_tutorialTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B8CF87D31D10AAED006BCB3D /* photo_tutorialTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = photo_tutorialTests.swift; sourceTree = "<group>"; };
@@ -98,11 +100,12 @@
 		B8CF87BD1D10AAED006BCB3D /* photo_tutorial */ = {
 			isa = PBXGroup;
 			children = (
+				B87C52001D1493030008F0DB /* LaunchScreen.storyboard */,
+				B87C51FE1D1490F10008F0DB /* GoogleService-Info.plist */,
 				B8CF87BE1D10AAED006BCB3D /* AppDelegate.swift */,
 				B8CF87C01D10AAED006BCB3D /* ViewController.swift */,
 				B8CF87C21D10AAED006BCB3D /* Main.storyboard */,
 				B8CF87C51D10AAED006BCB3D /* Assets.xcassets */,
-				B8CF87C71D10AAED006BCB3D /* LaunchScreen.storyboard */,
 				B8CF87CA1D10AAED006BCB3D /* Info.plist */,
 			);
 			path = photo_tutorial;
@@ -138,9 +141,9 @@
 				02C42943EA657B2C861423E0 /* [CP] Check Pods Manifest.lock */,
 				B8CF87B71D10AAED006BCB3D /* Sources */,
 				B8CF87B81D10AAED006BCB3D /* Frameworks */,
-				B8CF87B91D10AAED006BCB3D /* Resources */,
 				3DA30793B03FE5C44EDC5A9C /* [CP] Embed Pods Frameworks */,
 				87B6B08B8D1021AC679B7443 /* [CP] Copy Pods Resources */,
+				B8CF87B91D10AAED006BCB3D /* Resources */,
 			);
 			buildRules = (
 			);
@@ -215,7 +218,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B8CF87C91D10AAED006BCB3D /* LaunchScreen.storyboard in Resources */,
+				B87C51FF1D1490F10008F0DB /* GoogleService-Info.plist in Resources */,
+				B87C52021D1493030008F0DB /* LaunchScreen.storyboard in Resources */,
 				B8CF87C61D10AAED006BCB3D /* Assets.xcassets in Resources */,
 				B8CF87C41D10AAED006BCB3D /* Main.storyboard in Resources */,
 			);
@@ -352,20 +356,20 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		B87C52001D1493030008F0DB /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B87C52011D1493030008F0DB /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
 		B8CF87C21D10AAED006BCB3D /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				B8CF87C31D10AAED006BCB3D /* Base */,
 			);
 			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		B8CF87C71D10AAED006BCB3D /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				B8CF87C81D10AAED006BCB3D /* Base */,
-			);
-			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
