@@ -19,6 +19,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        imagePicker.delegate = self
     }
     
     override func didReceiveMemoryWarning() {
@@ -26,21 +27,40 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
         // Dispose of any resources that can be recreated.
     }
     
+    // Opens view controller to allow user to pick photo from library
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
-        imagePicker.dismissViewControllerAnimated(true, completion: nil)
-        imageView.image = info[UIImagePickerControllerOriginalImage] as? UIImage
+        if let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
+            // Need to upload pickedImage to firebase
+            let imageData: NSData = UIImagePNGRepresentation(pickedImage)!
+            let storage = FIRStorage.storage()
+            let storageRef = storage.referenceForURL("gs://photo-tutorial.appspot.com")
+            let imagesRef = storageRef.child("images")
+            let userImagesRef = imagesRef.child("user1.png")
+            userImagesRef.putData(imageData, metadata: nil) { metadata, error in
+                if (error != nil) {
+                    print("Fuck error")
+                } else {
+                    print("yay it worked")
+                }
+            }
+        }
+        
+        dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    func imagePickerControllerDidCancel(picker: UIImagePickerController) {
+        dismissViewControllerAnimated(true, completion: nil)
     }
     
     @IBOutlet weak var imageView: UIImageView!
     
     @IBAction func takePhoto(sender: UIButton) {
         imagePicker =  UIImagePickerController()
-        imagePicker.delegate = self
-        if (UIImagePickerController.isSourceTypeAvailable(.Camera)) {
-            imagePicker.sourceType = .Camera
-            presentViewController(imagePicker, animated: true, completion: nil)
-            
-        }
+        imagePicker.allowsEditing = false
+        imagePicker.sourceType = .PhotoLibrary
+        
+        presentViewController(imagePicker, animated: true, completion: nil)
+        
     }
     
     @IBAction func loginWithFacebook(sender: AnyObject) {

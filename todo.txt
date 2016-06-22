@@ -1,0 +1,6 @@
+Make sure camera works by linking with iPhone
+Send/receive pictures to/from Firebase backend
+Design and create other view controllers for:
+    Submitting a picture for review
+    Rating another person screen
+    Seeing a rating screen
