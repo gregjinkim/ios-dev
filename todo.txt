@@ -1,5 +1,9 @@
-Make sure camera works by linking with iPhone
-Send/receive pictures to/from Firebase backend
+Check size of picture before sending to firebase backend
+Resize image to fit UIImageView
+Configure database for image naming
+Image naming must not have collisions 
+Figure out how to tell whether photo taken horizontally or vertically
+Scale down image before upload to make file size smaller
 Design and create other view controllers for:
     Submitting a picture for review
     Rating another person screen

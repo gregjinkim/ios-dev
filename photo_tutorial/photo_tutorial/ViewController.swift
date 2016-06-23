@@ -13,13 +13,13 @@ import FBSDKLoginKit
 
 class ViewController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
     private let dataURL = "https://photo-tutorial.firebaseio.com"
-    
+    //let storage = FIRStorage.storage()
+    //let databaseRef = FIRDatabase.database().reference()
     var imagePicker: UIImagePickerController!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        imagePicker.delegate = self
     }
     
     override func didReceiveMemoryWarning() {
@@ -35,18 +35,39 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
             let storage = FIRStorage.storage()
             let storageRef = storage.referenceForURL("gs://photo-tutorial.appspot.com")
             let imagesRef = storageRef.child("images")
-            let userImagesRef = imagesRef.child("user1.png")
+            let imageName = "user1.png"
+            let userImagesRef = imagesRef.child(imageName)
             userImagesRef.putData(imageData, metadata: nil) { metadata, error in
                 if (error != nil) {
                     print("Fuck error")
                 } else {
                     print("yay it worked")
+                    self.loadRandomPicture()
                 }
             }
         }
         
         dismissViewControllerAnimated(true, completion: nil)
     }
+    
+    func loadRandomPicture() {
+        let storage = FIRStorage.storage()
+        let imagesRef = storage.referenceForURL("gs://photo-tutorial.appspot.com/images")
+        let imageName = "user1.png"
+        let imageRef = imagesRef.child(imageName)
+        imageRef.dataWithMaxSize(100 * 1024 * 1024) { (data, error) -> Void in
+            if (error != nil) {
+                print("error with downloading image from Firebase: \(error.debugDescription)")
+            } else {
+                let image: UIImage! = UIImage(data: data!)
+                
+                self.imageView.contentMode = UIViewContentMode.ScaleAspectFill
+                self.imageView.clipsToBounds = false
+                self.imageView.layer.masksToBounds = true
+                self.imageView.image = image
+                
+            }
+        }    }
     
     func imagePickerControllerDidCancel(picker: UIImagePickerController) {
         dismissViewControllerAnimated(true, completion: nil)
@@ -56,6 +77,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     
     @IBAction func takePhoto(sender: UIButton) {
         imagePicker =  UIImagePickerController()
+        imagePicker.delegate = self
         imagePicker.allowsEditing = false
         imagePicker.sourceType = .PhotoLibrary
         

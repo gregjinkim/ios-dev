@@ -187,6 +187,7 @@
 				TargetAttributes = {
 					B8CF87BA1D10AAED006BCB3D = {
 						CreatedOnToolsVersion = 7.2;
+						DevelopmentTeam = A7S42BG3GM;
 					};
 					B8CF87CE1D10AAED006BCB3D = {
 						CreatedOnToolsVersion = 7.2;
@@ -463,10 +464,13 @@
 			baseConfigurationReference = 6001A006FC822D4E6AE1B26F /* Pods-photo_tutorial.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = photo_tutorial/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.ioscreator.photo-tutorial";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -475,10 +479,13 @@
 			baseConfigurationReference = 660D912EC2B347D215AFB40D /* Pods-photo_tutorial.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = photo_tutorial/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.ioscreator.photo-tutorial";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};
