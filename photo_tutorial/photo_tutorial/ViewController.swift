@@ -52,11 +52,14 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
             }
             
             let databaseRef = FIRDatabase.database().reference()
-            databaseRef.child("imageLocations").setValue(["imageURL": imagesURL + imageName])
-            let key = databaseRef.child("userImages").child(uid).childByAutoId().key
-            let imagePost = ["imageURL" : imagesURL + imageName]
-            let imageUpdate = ["/userImages/\(uid)/\(key)/": imagePost]
-            databaseRef.updateChildValues(imageUpdate)
+            //databaseRef.child("imageLocations").setValue(["imageURL": imagesURL + imageName])
+            let key = databaseRef.child("imageLocations").childByAutoId().key
+            
+            let userImagePost = ["imageURL" : imagesURL + imageName]
+            let imageLocationPost = ["imageURL": imagesURL + imageName]
+            let update = ["/userImages/\(uid)/\(key)/": userImagePost, "/imageLocations/\(key)/": imageLocationPost]
+
+            databaseRef.updateChildValues(update)
         }
         
         dismissViewControllerAnimated(true, completion: nil)
@@ -89,24 +92,39 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     }
     
     func loadRandomPicture() {
-        let storage = FIRStorage.storage()
-        let imagesRef = storage.referenceForURL("gs://photo-tutorial.appspot.com/images")
-        let imageName = "user1.jpeg"
-        let imageRef = imagesRef.child(imageName)
-        imageRef.dataWithMaxSize(100 * 1024 * 1024) { (data, error) -> Void in
-            if (error != nil) {
-                print("error with downloading image from Firebase: \(error.debugDescription)")
-            } else {
-                let image: UIImage! = UIImage(data: data!)
-                
-                self.imageView.contentMode = UIViewContentMode.ScaleAspectFill
-                self.imageView.clipsToBounds = false
-                self.imageView.layer.masksToBounds = true
-                
-                self.imageView.image = image
-                
+        let databaseRef = FIRDatabase.database().reference()
+        databaseRef.child("imageLocations").observeSingleEventOfType(.Value, withBlock: { (snapshot) in
+            let randomImageIndex = arc4random_uniform(UInt32(snapshot.childrenCount))
+            var imageIndex: UInt32 = 0
+            print("count of snapshot children: \(snapshot.childrenCount)")
+            for child in snapshot.children {
+                print("hello \(child)")
+                if (imageIndex == randomImageIndex) {
+                    let imageURL: String = String(child.valueForKey("imageURL")!)
+                    let storage = FIRStorage.storage()
+                    let imageRef = storage.referenceForURL(imageURL)
+                    imageRef.dataWithMaxSize(100 * 1024 * 1024) { (data, error) -> Void in
+                        if (error != nil) {
+                            print("error with downloading image from Firebase: \(error.debugDescription)")
+                        } else {
+                            let image: UIImage! = UIImage(data: data!)
+                            
+                            self.imageView.contentMode = UIViewContentMode.ScaleAspectFill
+                            self.imageView.clipsToBounds = false
+                            self.imageView.layer.masksToBounds = true
+                            
+                            self.imageView.image = image
+                            
+                        }
+                    }
+                    break
+                }
+                imageIndex += 1;
             }
-        }    }
+        }) { (error) in
+            print(error.localizedDescription)
+        }
+    }
     
     func imagePickerControllerDidCancel(picker: UIImagePickerController) {
         dismissViewControllerAnimated(true, completion: nil)
