@@ -32,10 +32,15 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
             let targetSize = CGSize(width: 350.0, height: 400.0)
             let resizedImage = self.ResizeImage(pickedImage, targetSize: targetSize)
             let imageData: NSData = UIImagePNGRepresentation(resizedImage)!
+            
             let storage = FIRStorage.storage()
-            let storageRef = storage.referenceForURL("gs://photo-tutorial.appspot.com")
-            let imagesRef = storageRef.child("images")
-            let imageName = "user1.jpeg"
+            let imagesURL = "gs://photo-tutorial.appspot.com/images"
+            let imagesRef = storage.referenceForURL(imagesURL)
+            
+            let defaults = NSUserDefaults.standardUserDefaults()
+            let uid = defaults.stringForKey("uid")!
+            let randomNum = arc4random_uniform(1024 * 1024)
+            let imageName = uid + "_" + String(randomNum) + ".jpeg"
             let userImagesRef = imagesRef.child(imageName)
             userImagesRef.putData(imageData, metadata: nil) { metadata, error in
                 if (error != nil) {
@@ -45,6 +50,13 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
                     self.loadRandomPicture()
                 }
             }
+            
+            let databaseRef = FIRDatabase.database().reference()
+            databaseRef.child("imageLocations").setValue(["imageURL": imagesURL + imageName])
+            let key = databaseRef.child("userImages").child(uid).childByAutoId().key
+            let imagePost = ["imageURL" : imagesURL + imageName]
+            let imageUpdate = ["/userImages/\(uid)/\(key)/": imagePost]
+            databaseRef.updateChildValues(imageUpdate)
         }
         
         dismissViewControllerAnimated(true, completion: nil)
