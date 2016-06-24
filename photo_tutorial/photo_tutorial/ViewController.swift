@@ -102,7 +102,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     
     @IBOutlet weak var imageView: UIImageView!
     
-    @IBAction func takePhoto(sender: UIButton) {
+    @IBAction func uploadPhoto(sender: UIButton) {
         imagePicker =  UIImagePickerController()
         imagePicker.delegate = self
         imagePicker.allowsEditing = false
