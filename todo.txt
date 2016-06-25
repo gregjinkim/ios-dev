@@ -1,5 +1,5 @@
-Configure database for image naming
-Image naming must not have collisions 
+Make new view controller for scrolling through photos
+    Add ratings on that view controller and also database table for ratings
 Design and create other view controllers for:
     Submitting a picture for review
     Rating another person screen

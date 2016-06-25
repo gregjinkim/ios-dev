@@ -56,9 +56,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
             let key = databaseRef.child("imageLocations").childByAutoId().key
             
             let userImagePost = ["imageURL" : imagesURL + imageName]
-            let imageLocationPost = ["imageURL": imagesURL + imageName]
-            print(imageLocationPost)
-            let update = ["/userImages/\(uid)/\(key)/": userImagePost, "/imageLocations/\(key)/": imageLocationPost]
+            let imageInfoPost = ["imageURL": imagesURL + imageName, "uid": uid]
+            let update = ["/userImages/\(uid)/\(key)/": userImagePost, "/imagesInfo/\(key)/": imageInfoPost]
 
             databaseRef.updateChildValues(update)
         }
@@ -94,7 +93,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     
     func loadRandomPicture() {
         let databaseRef = FIRDatabase.database().reference()
-        databaseRef.child("imageLocations").observeSingleEventOfType(.Value, withBlock: { (snapshot) in
+        databaseRef.child("imagesInfo").observeSingleEventOfType(.Value, withBlock: { (snapshot) in
             let randomImageIndex = arc4random_uniform(UInt32(snapshot.childrenCount))
             var imageIndex: UInt32 = 0
             for child in snapshot.children {
