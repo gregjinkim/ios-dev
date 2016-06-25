@@ -49,31 +49,83 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" preservesSuperviewLayoutMargins="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zvR-Rq-Uka">
-                                <rect key="frame" x="100" y="28" width="200" height="200"/>
-                                <color key="backgroundColor" red="1" green="0.46836869710470919" blue="0.9568130159528504" alpha="1" colorSpace="calibratedRGB"/>
-                            </imageView>
                             <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ovT-lI-thJ">
-                                <rect key="frame" x="262" y="550" width="104" height="30"/>
+                                <rect key="frame" x="248" y="550" width="104" height="30"/>
                                 <state key="normal" title="Upload Photo"/>
                                 <connections>
                                     <action selector="uploadPhoto:" destination="uqP-Ci-37r" eventType="touchUpInside" id="Kgp-FJ-IAQ"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dUN-l0-IeF">
+                                <rect key="frame" x="259" y="479" width="83" height="30"/>
+                                <state key="normal" title="Rate Others"/>
+                                <connections>
+                                    <segue destination="9gL-JS-rAf" kind="show" id="Am1-zA-xX6"/>
+                                </connections>
+                            </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" preservesSuperviewLayoutMargins="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zvR-Rq-Uka">
+                                <rect key="frame" x="200" y="37" width="200" height="200"/>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="dUN-l0-IeF" firstAttribute="centerX" secondItem="LwW-UQ-QBY" secondAttribute="centerX" id="9bg-GP-3BE"/>
                             <constraint firstItem="zvR-Rq-Uka" firstAttribute="centerX" secondItem="LwW-UQ-QBY" secondAttribute="centerX" id="bPA-gE-lkp"/>
                             <constraint firstItem="ovT-lI-thJ" firstAttribute="centerX" secondItem="LwW-UQ-QBY" secondAttribute="centerX" id="fkY-Pz-pHa"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="imageView" destination="zvR-Rq-Uka" id="q8Q-Wz-qCf"/>
+                        <outlet property="uploadImageView" destination="zvR-Rq-Uka" id="SQS-H4-J2K"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1Dl-4x-vZx" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="822" y="392"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="q7s-IO-Giq">
+            <objects>
+                <viewController id="9gL-JS-rAf" customClass="ViewController" customModule="photo_tutorial" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Gcg-RY-H4C"/>
+                        <viewControllerLayoutGuide type="bottom" id="1l7-s5-g0W"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="DwN-nZ-beg">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mS9-FT-IIH">
+                                <rect key="frame" x="263" y="543" width="75" height="37"/>
+                                <state key="normal" title="View Next"/>
+                                <connections>
+                                    <action selector="viewNextImage:" destination="9gL-JS-rAf" eventType="touchUpInside" id="Dtr-GY-3mI"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="50m-a8-BsK">
+                                <rect key="frame" x="247" y="503" width="106" height="32"/>
+                                <state key="normal" title="Upload Image"/>
+                                <connections>
+                                    <segue destination="uqP-Ci-37r" kind="show" id="NoP-U0-pis"/>
+                                </connections>
+                            </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WnX-eB-kQ4">
+                                <rect key="frame" x="180" y="42" width="240" height="128"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="mS9-FT-IIH" firstAttribute="centerX" secondItem="DwN-nZ-beg" secondAttribute="centerX" id="FRa-4i-eZf"/>
+                            <constraint firstItem="50m-a8-BsK" firstAttribute="centerX" secondItem="DwN-nZ-beg" secondAttribute="centerX" id="e4B-jm-ptX"/>
+                            <constraint firstItem="WnX-eB-kQ4" firstAttribute="centerX" secondItem="DwN-nZ-beg" secondAttribute="centerX" id="ouT-4N-4yd"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="randomImageView" destination="WnX-eB-kQ4" id="fgo-yL-VYH"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Hdr-W6-BJg" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1465" y="392"/>
         </scene>
     </scenes>
 </document>

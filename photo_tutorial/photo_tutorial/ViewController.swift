@@ -33,6 +33,11 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
             let resizedImage = self.ResizeImage(pickedImage, targetSize: targetSize)
             let imageData: NSData = UIImagePNGRepresentation(resizedImage)!
             
+            self.uploadImageView.contentMode = UIViewContentMode.ScaleAspectFill
+            self.uploadImageView.clipsToBounds = false
+            self.uploadImageView.layer.masksToBounds = true
+            self.uploadImageView.image = resizedImage
+            
             let storage = FIRStorage.storage()
             let imagesURL = "gs://photo-tutorial.appspot.com/images/"
             let imagesRef = storage.referenceForURL(imagesURL)
@@ -47,7 +52,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
                     print("Fuck error")
                 } else {
                     print("yay it worked")
-                    self.loadRandomPicture()
+                    //self.loadRandomPicture()
                 }
             }
             
@@ -100,7 +105,6 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
                 if (imageIndex == randomImageIndex) {
 
                     let imageURL = child.value!["imageURL"] as! String
-                    print(imageURL)
                     let storage = FIRStorage.storage()
                     let imageRef = storage.referenceForURL(imageURL)
                     imageRef.dataWithMaxSize(100 * 1024 * 1024) { (data, error) -> Void in
@@ -109,11 +113,11 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
                         } else {
                             let image: UIImage! = UIImage(data: data!)
                             
-                            self.imageView.contentMode = UIViewContentMode.ScaleAspectFill
-                            self.imageView.clipsToBounds = false
-                            self.imageView.layer.masksToBounds = true
+                            self.randomImageView.contentMode = UIViewContentMode.ScaleAspectFill
+                            self.randomImageView.clipsToBounds = false
+                            self.randomImageView.layer.masksToBounds = true
                             
-                            self.imageView.image = image
+                            self.randomImageView.image = image
                             
                         }
                     }
@@ -130,7 +134,9 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
         dismissViewControllerAnimated(true, completion: nil)
     }
     
-    @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var uploadImageView: UIImageView!
+    
+    @IBOutlet weak var randomImageView: UIImageView!
     
     @IBAction func uploadPhoto(sender: UIButton) {
         imagePicker =  UIImagePickerController()
@@ -140,6 +146,10 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
         
         presentViewController(imagePicker, animated: true, completion: nil)
         
+    }
+    
+    @IBAction func viewNextImage(sender: AnyObject) {
+        loadRandomPicture()
     }
     
     @IBAction func loginWithFacebook(sender: AnyObject) {
