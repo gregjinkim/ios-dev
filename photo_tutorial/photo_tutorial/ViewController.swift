@@ -34,7 +34,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
             let imageData: NSData = UIImagePNGRepresentation(resizedImage)!
             
             let storage = FIRStorage.storage()
-            let imagesURL = "gs://photo-tutorial.appspot.com/images"
+            let imagesURL = "gs://photo-tutorial.appspot.com/images/"
             let imagesRef = storage.referenceForURL(imagesURL)
             
             let defaults = NSUserDefaults.standardUserDefaults()
@@ -57,6 +57,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
             
             let userImagePost = ["imageURL" : imagesURL + imageName]
             let imageLocationPost = ["imageURL": imagesURL + imageName]
+            print(imageLocationPost)
             let update = ["/userImages/\(uid)/\(key)/": userImagePost, "/imageLocations/\(key)/": imageLocationPost]
 
             databaseRef.updateChildValues(update)
@@ -96,11 +97,11 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
         databaseRef.child("imageLocations").observeSingleEventOfType(.Value, withBlock: { (snapshot) in
             let randomImageIndex = arc4random_uniform(UInt32(snapshot.childrenCount))
             var imageIndex: UInt32 = 0
-            print("count of snapshot children: \(snapshot.childrenCount)")
             for child in snapshot.children {
-                print("hello \(child)")
                 if (imageIndex == randomImageIndex) {
-                    let imageURL: String = String(child.valueForKey("imageURL")!)
+
+                    let imageURL = child.value!["imageURL"] as! String
+                    print(imageURL)
                     let storage = FIRStorage.storage()
                     let imageRef = storage.referenceForURL(imageURL)
                     imageRef.dataWithMaxSize(100 * 1024 * 1024) { (data, error) -> Void in
