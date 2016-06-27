@@ -111,16 +111,31 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WnX-eB-kQ4">
                                 <rect key="frame" x="180" y="42" width="240" height="128"/>
                             </imageView>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Rating" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="egq-mt-8Nk">
+                                <rect key="frame" x="252" y="422" width="97" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MVk-T4-lwP">
+                                <rect key="frame" x="277" y="465" width="46" height="30"/>
+                                <state key="normal" title="Rate"/>
+                                <connections>
+                                    <action selector="rateImage:" destination="9gL-JS-rAf" eventType="touchUpInside" id="WA0-hD-j9Z"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="mS9-FT-IIH" firstAttribute="centerX" secondItem="DwN-nZ-beg" secondAttribute="centerX" id="FRa-4i-eZf"/>
+                            <constraint firstItem="egq-mt-8Nk" firstAttribute="centerX" secondItem="DwN-nZ-beg" secondAttribute="centerX" id="J1b-kN-8oJ"/>
+                            <constraint firstItem="MVk-T4-lwP" firstAttribute="centerX" secondItem="DwN-nZ-beg" secondAttribute="centerX" id="Qnj-5D-C2G"/>
                             <constraint firstItem="50m-a8-BsK" firstAttribute="centerX" secondItem="DwN-nZ-beg" secondAttribute="centerX" id="e4B-jm-ptX"/>
                             <constraint firstItem="WnX-eB-kQ4" firstAttribute="centerX" secondItem="DwN-nZ-beg" secondAttribute="centerX" id="ouT-4N-4yd"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="randomImageView" destination="WnX-eB-kQ4" id="fgo-yL-VYH"/>
+                        <outlet property="ratingScore" destination="egq-mt-8Nk" id="l66-aL-XyO"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Hdr-W6-BJg" userLabel="First Responder" sceneMemberID="firstResponder"/>

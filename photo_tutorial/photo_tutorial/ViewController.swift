@@ -11,8 +11,9 @@ import Firebase
 import FBSDKCoreKit
 import FBSDKLoginKit
 
-class ViewController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
+class ViewController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UITextFieldDelegate {
     private let dataURL = "https://photo-tutorial.firebaseio.com"
+    private var currentImageURL = ""
     var imagePicker: UIImagePickerController!
     
     override func viewDidLoad() {
@@ -23,6 +24,11 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?){
+        view.endEditing(true)
+        super.touchesBegan(touches, withEvent: event)
     }
     
     // Opens view controller to allow user to pick photo from library
@@ -118,7 +124,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
                             self.randomImageView.layer.masksToBounds = true
                             
                             self.randomImageView.image = image
-                            
+                            self.currentImageURL = imageURL
                         }
                     }
                     break
@@ -137,6 +143,32 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     @IBOutlet weak var uploadImageView: UIImageView!
     
     @IBOutlet weak var randomImageView: UIImageView!
+    
+    @IBOutlet weak var ratingScore: UITextField!
+    
+    @IBAction func rateImage(sender: AnyObject) {
+        let scoreString = self.ratingScore.text
+        if let scoreInt = Int(scoreString!) {
+            if (scoreInt >= 0 && scoreInt <= 100) {
+                let databaseRef = FIRDatabase.database().reference()
+                let key = databaseRef.child("imageRatings").childByAutoId().key
+                let imageURL = self.currentImageURL
+                let ratingPost = ["rating" : scoreInt]
+                let imageId = imageURL.componentsSeparatedByString(".")[2].componentsSeparatedByString("/")[2]
+                let update = ["/imageRatings/\(imageId)/\(key)/": ratingPost]
+                
+                databaseRef.updateChildValues(update)
+            } else {
+                self.showErrorForRating()
+            }
+        } else {
+            self.showErrorForRating()
+        }
+    }
+    
+    func showErrorForRating() {
+        // show error message for inputing invalid rating
+    }
     
     @IBAction func uploadPhoto(sender: UIButton) {
         imagePicker =  UIImagePickerController()
