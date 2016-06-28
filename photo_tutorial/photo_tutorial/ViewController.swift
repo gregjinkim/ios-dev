@@ -35,7 +35,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
         if let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
             // Need to upload pickedImage to firebase
-            let targetSize = CGSize(width: 350.0, height: 400.0)
+            let targetSize = CGSize(width: 350.0, height: 350.0)
             let resizedImage = self.ResizeImage(pickedImage, targetSize: targetSize)
             let imageData: NSData = UIImagePNGRepresentation(resizedImage)!
             
@@ -109,7 +109,6 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
             var imageIndex: UInt32 = 0
             for child in snapshot.children {
                 if (imageIndex == randomImageIndex) {
-
                     let imageURL = child.value!["imageURL"] as! String
                     let storage = FIRStorage.storage()
                     let imageRef = storage.referenceForURL(imageURL)
@@ -146,6 +145,10 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     
     @IBOutlet weak var ratingScore: UITextField!
     
+    @IBOutlet weak var myRating: UITextField!
+    
+    @IBOutlet weak var raterImageView: UIImageView!
+    
     @IBAction func rateImage(sender: AnyObject) {
         let scoreString = self.ratingScore.text
         if let scoreInt = Int(scoreString!) {
@@ -153,8 +156,11 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
                 let databaseRef = FIRDatabase.database().reference()
                 let key = databaseRef.child("imageRatings").childByAutoId().key
                 let imageURL = self.currentImageURL
-                let ratingPost = ["rating" : scoreInt]
-                let imageId = imageURL.componentsSeparatedByString(".")[2].componentsSeparatedByString("/")[2]
+                
+                let defaults = NSUserDefaults.standardUserDefaults()
+                let uid = defaults.stringForKey("uid")!
+                let ratingPost = ["rating" : scoreInt, "uid" : uid]
+                let imageId = self.getImageIdFromURL(imageURL)
                 let update = ["/imageRatings/\(imageId)/\(key)/": ratingPost]
                 
                 databaseRef.updateChildValues(update)
@@ -164,6 +170,68 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
         } else {
             self.showErrorForRating()
         }
+    }
+    
+    func getImageIdFromURL(imageURL: String) -> String {
+        return imageURL.componentsSeparatedByString(".")[2].componentsSeparatedByString("/")[2]
+    }
+    
+    @IBAction func showNextRating(sender: AnyObject) {
+        let defaults = NSUserDefaults.standardUserDefaults()
+        let uid = defaults.stringForKey("uid")!
+        
+        let databaseRef = FIRDatabase.database().reference()
+        databaseRef.child("userImages").child(uid).queryLimitedToFirst(1).observeSingleEventOfType(.Value, withBlock: { (snapshot) in
+            if (snapshot.childrenCount > 0) {
+                let imagePost = snapshot.children.nextObject()
+                let imageURL = imagePost!.value!["imageURL"] as! String
+                let imageId = self.getImageIdFromURL(imageURL)
+                databaseRef.child("imageRatings").child(imageId).observeSingleEventOfType(.Value, withBlock: { (snapshot) in
+                    if (snapshot.childrenCount > 0) {
+                        let currentRatingPost = snapshot.children.nextObject()
+                        let currentRating = currentRatingPost!.value!["rating"] as! Int
+                        self.myRating.text = String(currentRating)
+                        self.accumulateAndDeleteRating(imageId, rating: currentRating)
+                        print(currentRatingPost)
+                        let raterId = currentRatingPost!.value!["uid"] as! String
+                        let databaseRef = FIRDatabase.database().reference()
+                        
+                        databaseRef.child("userImages").child(String(raterId)).queryLimitedToFirst(1).observeSingleEventOfType(.Value, withBlock: { (snapshot) in
+                            if (snapshot.childrenCount > 0) {
+                                let imagePost = snapshot.children.nextObject()
+                                let imageURL = imagePost!.value!["imageURL"] as! String
+                                
+                                let storage = FIRStorage.storage()
+                                let imageRef = storage.referenceForURL(imageURL)
+                                imageRef.dataWithMaxSize(100 * 1024 * 1024) { (data, error) -> Void in
+                                    if (error != nil) {
+                                        print("error with downloading image from Firebase: \(error.debugDescription)")
+                                    } else {
+                                        let image: UIImage! = UIImage(data: data!)
+                                        
+                                        self.raterImageView.contentMode = UIViewContentMode.ScaleAspectFill
+                                        self.raterImageView.clipsToBounds = false
+                                        self.raterImageView.layer.masksToBounds = true
+                                        
+                                        self.raterImageView.image = image
+                                    }
+                                }
+                            }
+                        }) { (error) in
+                            print(error.localizedDescription)
+                        }
+                    }
+                }) { (error) in
+                    print(error.localizedDescription)
+                }
+            }
+        }) { (error) in
+            print(error.localizedDescription)
+        }
+    }
+    
+    func accumulateAndDeleteRating(imageId: String, rating: Int) {
+        // put the rating into this user's average and then delete the post from imageRatings so user doesn't see same rating twice.
     }
     
     func showErrorForRating() {

@@ -1,6 +1,14 @@
-Make new view controller for scrolling through photos
-    Add ratings on that view controller and also database table for ratings
-Design and create other view controllers for:
-    Submitting a picture for review
-    Rating another person screen
-    Seeing a rating screen
+Show the other user’s information in view ratings
+Post on internet if anyone knows how to implement iOS scrolling selector
+Filter out what photos the user should not see
+	Filter out friends’ photos 
+	Filter out own photos
+AccumulateAndDeleteRating
+	Take rating and add to average score
+	Delete the rating
+Rename the photos in the database to use the autoKey instead of the userId_randInt
+Create multiple swift files for each ViewController
+User multi-tabbed application
+	Upload photos
+	See ratings
+	Rate others
