@@ -35,7 +35,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
         if let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
             // Need to upload pickedImage to firebase
-            let targetSize = CGSize(width: 350.0, height: 350.0)
+            let targetSize = CGSize(width: 350.0, height: 320.0)
             let resizedImage = self.ResizeImage(pickedImage, targetSize: targetSize)
             let imageData: NSData = UIImagePNGRepresentation(resizedImage)!
             
@@ -105,34 +105,52 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     func loadRandomPicture() {
         let databaseRef = FIRDatabase.database().reference()
         databaseRef.child("imagesInfo").observeSingleEventOfType(.Value, withBlock: { (snapshot) in
-            let randomImageIndex = arc4random_uniform(UInt32(snapshot.childrenCount))
-            var imageIndex: UInt32 = 0
-            for child in snapshot.children {
-                if (imageIndex == randomImageIndex) {
-                    let imageURL = child.value!["imageURL"] as! String
-                    let storage = FIRStorage.storage()
-                    let imageRef = storage.referenceForURL(imageURL)
-                    imageRef.dataWithMaxSize(100 * 1024 * 1024) { (data, error) -> Void in
-                        if (error != nil) {
-                            print("error with downloading image from Firebase: \(error.debugDescription)")
-                        } else {
-                            let image: UIImage! = UIImage(data: data!)
-                            
-                            self.randomImageView.contentMode = UIViewContentMode.ScaleAspectFill
-                            self.randomImageView.clipsToBounds = false
-                            self.randomImageView.layer.masksToBounds = true
-                            
-                            self.randomImageView.image = image
-                            self.currentImageURL = imageURL
-                        }
-                    }
-                    break
+            let childrenCount = snapshot.childrenCount
+            var randomImageIndex = arc4random_uniform(UInt32(childrenCount))
+            
+
+            let children = snapshot.children.allObjects
+            var imageURL: String? = nil
+            var tries = 0
+            while (imageURL == nil && tries < 10) {
+                let child = children[Int(randomImageIndex)]
+                let imageUserId = child.value!["uid"] as! String
+                if (self.canShowImage(imageUserId)) {
+                    imageURL = child.value!["imageURL"] as? String
                 }
-                imageIndex += 1;
+                randomImageIndex = arc4random_uniform(UInt32(childrenCount))
+                tries += 1
             }
+            
+            if (imageURL != nil) {
+            
+                let storage = FIRStorage.storage()
+                let imageRef = storage.referenceForURL(imageURL!)
+                imageRef.dataWithMaxSize(100 * 1024 * 1024) { (data, error) -> Void in
+                    if (error != nil) {
+                        print("error with downloading image from Firebase: \(error.debugDescription)")
+                    } else {
+                        let image: UIImage! = UIImage(data: data!)
+                        
+                        self.randomImageView.contentMode = UIViewContentMode.ScaleAspectFill
+                        self.randomImageView.clipsToBounds = false
+                        self.randomImageView.layer.masksToBounds = true
+                        
+                        self.randomImageView.image = image
+                        self.currentImageURL = imageURL!
+                    }
+                }
+            }
+
         }) { (error) in
             print(error.localizedDescription)
         }
+    }
+    
+    func canShowImage(imageUserId: String) -> Bool {
+        let defaults = NSUserDefaults.standardUserDefaults()
+        let uid = defaults.stringForKey("uid")!
+        return true //uid != imageUserId
     }
     
     func imagePickerControllerDidCancel(picker: UIImagePickerController) {
@@ -143,11 +161,16 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     
     @IBOutlet weak var randomImageView: UIImageView!
     
-    @IBOutlet weak var ratingScore: UITextField!
+    @IBOutlet weak var ratingScore: UILabel!
     
-    @IBOutlet weak var myRating: UITextField!
+    @IBOutlet weak var myRating: UILabel!
     
     @IBOutlet weak var raterImageView: UIImageView!
+    
+    @IBAction func sliderValueChanged(sender: UISlider) {
+        let rating = Int(sender.value)
+        self.ratingScore.text = "\(rating)"
+    }
     
     @IBAction func rateImage(sender: AnyObject) {
         let scoreString = self.ratingScore.text
@@ -181,7 +204,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
         let uid = defaults.stringForKey("uid")!
         
         let databaseRef = FIRDatabase.database().reference()
-        databaseRef.child("userImages").child(uid).queryLimitedToFirst(1).observeSingleEventOfType(.Value, withBlock: { (snapshot) in
+        databaseRef.child("userImages").child(uid).queryLimitedToLast(1).observeSingleEventOfType(.Value, withBlock: { (snapshot) in
             if (snapshot.childrenCount > 0) {
                 let imagePost = snapshot.children.nextObject()
                 let imageURL = imagePost!.value!["imageURL"] as! String
@@ -192,11 +215,11 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
                         let currentRating = currentRatingPost!.value!["rating"] as! Int
                         self.myRating.text = String(currentRating)
                         self.accumulateAndDeleteRating(imageId, rating: currentRating)
-                        print(currentRatingPost)
+
                         let raterId = currentRatingPost!.value!["uid"] as! String
                         let databaseRef = FIRDatabase.database().reference()
                         
-                        databaseRef.child("userImages").child(String(raterId)).queryLimitedToFirst(1).observeSingleEventOfType(.Value, withBlock: { (snapshot) in
+                        databaseRef.child("userImages").child(String(raterId)).queryLimitedToLast(1).observeSingleEventOfType(.Value, withBlock: { (snapshot) in
                             if (snapshot.childrenCount > 0) {
                                 let imagePost = snapshot.children.nextObject()
                                 let imageURL = imagePost!.value!["imageURL"] as! String

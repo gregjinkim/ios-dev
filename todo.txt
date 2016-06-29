@@ -1,8 +1,7 @@
 Show the other user’s information in view ratings
-Post on internet if anyone knows how to implement iOS scrolling selector
+	Added picture, still need age, location, occupation, race
 Filter out what photos the user should not see
-	Filter out friends’ photos 
-	Filter out own photos
+	Filter out friends’ photos - stored friends in NSuserDefaults
 AccumulateAndDeleteRating
 	Take rating and add to average score
 	Delete the rating

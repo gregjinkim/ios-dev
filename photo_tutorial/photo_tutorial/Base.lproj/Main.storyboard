@@ -119,11 +119,6 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WnX-eB-kQ4">
                                 <rect key="frame" x="180" y="42" width="240" height="128"/>
                             </imageView>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Rating" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="egq-mt-8Nk">
-                                <rect key="frame" x="252" y="422" width="97" height="30"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
                             <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MVk-T4-lwP">
                                 <rect key="frame" x="277" y="465" width="46" height="30"/>
                                 <state key="normal" title="Rate"/>
@@ -131,27 +126,32 @@
                                     <action selector="rateImage:" destination="9gL-JS-rAf" eventType="touchUpInside" id="WA0-hD-j9Z"/>
                                 </connections>
                             </button>
-                            <stackView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="peI-yZ-5bR">
-                                <rect key="frame" x="534" y="550" width="50" height="50"/>
-                                <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="3GQ-hY-8MQ">
-                                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
-                                    </stackView>
-                                </subviews>
-                            </stackView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aOb-DG-dhd">
+                                <rect key="frame" x="271" y="385" width="58" height="34"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <slider opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="CPi-UI-mdf">
+                                <rect key="frame" x="125" y="427" width="350" height="31"/>
+                                <connections>
+                                    <action selector="sliderValueChanged:" destination="9gL-JS-rAf" eventType="valueChanged" id="cnT-Ds-XOu"/>
+                                </connections>
+                            </slider>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="mS9-FT-IIH" firstAttribute="centerX" secondItem="DwN-nZ-beg" secondAttribute="centerX" id="FRa-4i-eZf"/>
-                            <constraint firstItem="egq-mt-8Nk" firstAttribute="centerX" secondItem="DwN-nZ-beg" secondAttribute="centerX" id="J1b-kN-8oJ"/>
                             <constraint firstItem="MVk-T4-lwP" firstAttribute="centerX" secondItem="DwN-nZ-beg" secondAttribute="centerX" id="Qnj-5D-C2G"/>
                             <constraint firstItem="50m-a8-BsK" firstAttribute="centerX" secondItem="DwN-nZ-beg" secondAttribute="centerX" id="e4B-jm-ptX"/>
                             <constraint firstItem="WnX-eB-kQ4" firstAttribute="centerX" secondItem="DwN-nZ-beg" secondAttribute="centerX" id="ouT-4N-4yd"/>
+                            <constraint firstItem="CPi-UI-mdf" firstAttribute="centerX" secondItem="DwN-nZ-beg" secondAttribute="centerX" id="q3i-Z2-9ZB"/>
+                            <constraint firstItem="aOb-DG-dhd" firstAttribute="centerX" secondItem="DwN-nZ-beg" secondAttribute="centerX" id="wsS-GG-o7a"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="randomImageView" destination="WnX-eB-kQ4" id="fgo-yL-VYH"/>
-                        <outlet property="ratingScore" destination="egq-mt-8Nk" id="l66-aL-XyO"/>
+                        <outlet property="ratingScore" destination="aOb-DG-dhd" id="yqN-BK-ALH"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Hdr-W6-BJg" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -177,11 +177,6 @@
                                     <action selector="showNextRating:" destination="Xcy-Yq-jzp" eventType="touchUpInside" id="3S0-BT-kD3"/>
                                 </connections>
                             </button>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="tc2-Xd-Jtx">
-                                <rect key="frame" x="252" y="430" width="97" height="30"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="AR2-nP-ojH">
                                 <rect key="frame" x="180" y="53" width="240" height="220"/>
                             </imageView>
@@ -192,17 +187,23 @@
                                     <segue destination="uqP-Ci-37r" kind="show" id="KkB-2r-C6v"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ziW-pO-GIv">
+                                <rect key="frame" x="274" y="444" width="53" height="27"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="tc2-Xd-Jtx" firstAttribute="centerX" secondItem="qlI-AV-mbI" secondAttribute="centerX" id="NT2-Ak-6Wd"/>
                             <constraint firstItem="AR2-nP-ojH" firstAttribute="centerX" secondItem="qlI-AV-mbI" secondAttribute="centerX" id="R5T-fK-qOg"/>
                             <constraint firstItem="PRM-vk-lvt" firstAttribute="centerX" secondItem="qlI-AV-mbI" secondAttribute="centerX" id="VqW-WW-GT8"/>
+                            <constraint firstItem="ziW-pO-GIv" firstAttribute="centerX" secondItem="qlI-AV-mbI" secondAttribute="centerX" id="a8a-Q6-5yP"/>
                             <constraint firstItem="pG3-rj-kme" firstAttribute="centerX" secondItem="qlI-AV-mbI" secondAttribute="centerX" id="tAc-YP-fgz"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="myRating" destination="tc2-Xd-Jtx" id="Fw2-th-KZ0"/>
+                        <outlet property="myRating" destination="ziW-pO-GIv" id="Yg4-c4-S6L"/>
                         <outlet property="raterImageView" destination="AR2-nP-ojH" id="Qjs-tg-lOO"/>
                     </connections>
                 </viewController>
