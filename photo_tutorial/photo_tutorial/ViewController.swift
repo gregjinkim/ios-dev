@@ -148,9 +148,19 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     }
     
     func canShowImage(imageUserId: String) -> Bool {
-        let defaults = NSUserDefaults.standardUserDefaults()
-        let uid = defaults.stringForKey("uid")!
-        return true //uid != imageUserId
+        //let defaults = NSUserDefaults.standardUserDefaults()
+        //let uid = defaults.stringForKey("uid")!
+        /*let friends = defaults.arrayForKey("friends")!
+        for friend in friends {
+            if (imageUserId == friend as! String) {
+                return false
+            }
+        }
+        
+        if (uid == imageUserId) {
+            return false
+        }*/
+        return true
     }
     
     func imagePickerControllerDidCancel(picker: UIImagePickerController) {
@@ -277,6 +287,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     
     @IBAction func loginWithFacebook(sender: AnyObject) {
         let facebookLogin = FBSDKLoginManager()
+        facebookLogin.logOut()
         facebookLogin.logInWithReadPermissions(["user_friends", "public_profile", "email"],
             fromViewController: self, handler:{(facebookResult, facebookError) -> Void in
             if facebookError != nil { print("Facebook login failed. Error \(facebookError)")
@@ -292,17 +303,57 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
                         
                         // save user id as default variable in app
                         let defaults = NSUserDefaults.standardUserDefaults()
-                        defaults.setValue(user!.uid, forKey: "uid")
-                        defaults.synchronize()
                         
-                        // saved user id to database
-                        let databaseRef = FIRDatabase.database().reference()
-                        databaseRef.child("users").setValue(["userId": user!.uid])
+                        if((FBSDKAccessToken.currentAccessToken()) != nil){
+                            FBSDKGraphRequest(graphPath: "me", parameters: ["fields": "id"], tokenString: FBSDKAccessToken.currentAccessToken().tokenString, version: nil, HTTPMethod: "GET").startWithCompletionHandler({ (connection, result, error) -> Void in
+                                if (error == nil){
+                                    let idData = result as! NSDictionary
+                                    
+                                    defaults.setValue(idData.objectForKey("id")! as! String, forKey: "uid")
+                                    defaults.synchronize()
+                                    
+                                    // saved user id to database
+                                    let databaseRef = FIRDatabase.database().reference()
+                                    
+                                    let key = databaseRef.child("users").childByAutoId().key
+                                    
+                                    let userPost = ["userId" : idData.objectForKey("id")! as! String]
+                                    let update = ["/users/\(key)/": userPost]
+                                    
+                                    databaseRef.updateChildValues(update)
+                                } else {
+                                    print("error \(error)")
+                                }
+                            })
+                            FBSDKGraphRequest(graphPath: "me/friends", parameters: ["fields": "user_friends"], tokenString: FBSDKAccessToken.currentAccessToken().tokenString, version: nil, HTTPMethod: "GET").startWithCompletionHandler({ (connection, result, error) -> Void in
+                                if (error == nil){
+                                    let friendsData = result as! NSDictionary
+                                    let friendIdsDict = friendsData.objectForKey("data")! as! NSArray
+                                    var friendsArray = [String]()
+                                    for friendIdData in friendIdsDict {
+                                        let friendId = friendIdData as! NSDictionary
+                                        friendsArray.append(friendId.objectForKey("id")! as! String)
+                                    }
+                                    defaults.setValue(friendsArray, forKey: "friends")
+                                    defaults.synchronize()
+                                } else {
+                                    print("error \(error)")
+                                }
+                            })
+                        }
                         
                         let photoTakerController = (self.storyboard?.instantiateViewControllerWithIdentifier("PhotoTaker"))!
                             as UIViewController
                         
                         self.presentViewController(photoTakerController, animated: true, completion: nil)
+                        
+                        if((FBSDKAccessToken.currentAccessToken()) != nil){
+                            FBSDKGraphRequest(graphPath: "me", parameters: ["fields": "user_friends"]).startWithCompletionHandler({ (connection, result, error) -> Void in
+                                if (error == nil){
+                                    print("friends \(result)")
+                                }
+                            })
+                        }
                     }
                 }
             }
