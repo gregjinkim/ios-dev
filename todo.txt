@@ -1,11 +1,10 @@
+Need to gather user info during sign-in and store in users database
+Have view controller populated when switching between views
 Show the other user’s information in view ratings
 	Added picture, still need age, location, occupation, race
-Filter out what photos the user should not see
-	Filter out friends’ photos - stored friends in NSuserDefaults
 AccumulateAndDeleteRating
 	Take rating and add to average score
 	Delete the rating
-Rename the photos in the database to use the autoKey instead of the userId_randInt
 Create multiple swift files for each ViewController
 User multi-tabbed application
 	Upload photos

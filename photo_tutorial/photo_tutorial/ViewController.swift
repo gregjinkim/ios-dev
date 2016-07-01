@@ -50,8 +50,13 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
             
             let defaults = NSUserDefaults.standardUserDefaults()
             let uid = defaults.stringForKey("uid")!
-            let randomNum = arc4random_uniform(1024 * 1024)
-            let imageName = uid + "_" + String(randomNum) + ".jpeg"
+            
+            let databaseRef = FIRDatabase.database().reference()
+            let key = databaseRef.child("imagesInfo").childByAutoId().key
+            //let randomNum = arc4random_uniform(1024 * 1024)
+            let imageName = key + ".jpeg"
+            
+            
             let userImagesRef = imagesRef.child(imageName)
             userImagesRef.putData(imageData, metadata: nil) { metadata, error in
                 if (error != nil) {
@@ -62,13 +67,12 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
                 }
             }
             
-            let databaseRef = FIRDatabase.database().reference()
-            //databaseRef.child("imageLocations").setValue(["imageURL": imagesURL + imageName])
-            let key = databaseRef.child("imageLocations").childByAutoId().key
+            //let databaseRef = FIRDatabase.database().reference()
+            //let key = databaseRef.child("imagesInfo").childByAutoId().key
             
             let userImagePost = ["imageURL" : imagesURL + imageName]
-            let imageInfoPost = ["imageURL": imagesURL + imageName, "uid": uid]
-            let update = ["/userImages/\(uid)/\(key)/": userImagePost, "/imagesInfo/\(key)/": imageInfoPost]
+            let imagesInfoPost = ["imageURL": imagesURL + imageName, "uid": uid]
+            let update = ["/userImages/\(uid)/\(key)/": userImagePost, "/imagesInfo/\(key)/": imagesInfoPost]
 
             databaseRef.updateChildValues(update)
         }
@@ -197,6 +201,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
                 let update = ["/imageRatings/\(imageId)/\(key)/": ratingPost]
                 
                 databaseRef.updateChildValues(update)
+                
+                loadRandomPicture()
             } else {
                 self.showErrorForRating()
             }
