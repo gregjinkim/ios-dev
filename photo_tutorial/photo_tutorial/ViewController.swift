@@ -216,6 +216,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     }
     
     @IBAction func showNextRating(sender: AnyObject) {
+        
         let defaults = NSUserDefaults.standardUserDefaults()
         let uid = defaults.stringForKey("uid")!
         
@@ -271,6 +272,23 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     
     func accumulateAndDeleteRating(imageId: String, rating: Int) {
         // put the rating into this user's average and then delete the post from imageRatings so user doesn't see same rating twice.
+        let defaults = NSUserDefaults.standardUserDefaults()
+        let uid = defaults.stringForKey("uid")!
+        
+        // update average
+        let databaseRef = FIRDatabase.database().reference()
+        databaseRef.child("averageRatings").observeSingleEventOfType(.Value, withBlock: { (snapshot) in
+            var count = databaseRef.child("averageRatings").child(uid).valueForKey("count") as! Int
+            var sum = databaseRef.child("averageRatings").child(uid).valueForKey("sum") as! Int
+            count += 1
+            sum += rating
+            databaseRef.child("averageRatings").child(uid).setValue(["sum": sum, "count": count])
+            
+        }) { (error) in
+            print(error.localizedDescription)
+        }
+        
+        // delete rating
     }
     
     func showErrorForRating() {
@@ -314,19 +332,23 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
                             FBSDKGraphRequest(graphPath: "me", parameters: ["fields": "id"], tokenString: FBSDKAccessToken.currentAccessToken().tokenString, version: nil, HTTPMethod: "GET").startWithCompletionHandler({ (connection, result, error) -> Void in
                                 if (error == nil){
                                     let idData = result as! NSDictionary
-                                    
-                                    defaults.setValue(idData.objectForKey("id")! as! String, forKey: "uid")
+                                    let uid = idData.objectForKey("id")! as! String
+                                    defaults.setValue(uid, forKey: "uid")
                                     defaults.synchronize()
                                     
                                     // saved user id to database
                                     let databaseRef = FIRDatabase.database().reference()
                                     
-                                    let key = databaseRef.child("users").childByAutoId().key
+                                    databaseRef.child("users").observeSingleEventOfType(.Value, withBlock: { (snapshot) in
+                                        if (!snapshot.hasChild(uid)) {
+                                            databaseRef.child("users").child(uid).setValue(["placeholder": "placeholder"])
+                                            databaseRef.child("averageRatings").child(uid).setValue(["sum": 0, "count": 0])
+                                        }
+                                    }) { (error) in
+                                        print(error.localizedDescription)
+                                    }
                                     
-                                    let userPost = ["userId" : idData.objectForKey("id")! as! String]
-                                    let update = ["/users/\(key)/": userPost]
                                     
-                                    databaseRef.updateChildValues(update)
                                 } else {
                                     print("error \(error)")
                                 }
