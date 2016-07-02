@@ -228,12 +228,12 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
                 let imageId = self.getImageIdFromURL(imageURL)
                 databaseRef.child("imageRatings").child(imageId).observeSingleEventOfType(.Value, withBlock: { (snapshot) in
                     if (snapshot.childrenCount > 0) {
-                        let currentRatingPost = snapshot.children.nextObject()
-                        let currentRating = currentRatingPost!.value!["rating"] as! Int
+                        let currentRatingPost = snapshot.children.nextObject() as! FIRDataSnapshot
+                        let currentRating = currentRatingPost.value!["rating"] as! Int
                         self.myRating.text = String(currentRating)
-                        self.accumulateAndDeleteRating(imageId, rating: currentRating)
+                        self.accumulateAndDeleteRating(imageId, ratingKey: currentRatingPost.key, rating: currentRating)
 
-                        let raterId = currentRatingPost!.value!["uid"] as! String
+                        let raterId = currentRatingPost.value!["uid"] as! String
                         let databaseRef = FIRDatabase.database().reference()
                         
                         databaseRef.child("userImages").child(String(raterId)).queryLimitedToLast(1).observeSingleEventOfType(.Value, withBlock: { (snapshot) in
@@ -270,16 +270,17 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
         }
     }
     
-    func accumulateAndDeleteRating(imageId: String, rating: Int) {
+    func accumulateAndDeleteRating(imageId: String, ratingKey: String, rating: Int) {
         // put the rating into this user's average and then delete the post from imageRatings so user doesn't see same rating twice.
         let defaults = NSUserDefaults.standardUserDefaults()
         let uid = defaults.stringForKey("uid")!
         
         // update average
         let databaseRef = FIRDatabase.database().reference()
-        databaseRef.child("averageRatings").observeSingleEventOfType(.Value, withBlock: { (snapshot) in
-            var count = databaseRef.child("averageRatings").child(uid).valueForKey("count") as! Int
-            var sum = databaseRef.child("averageRatings").child(uid).valueForKey("sum") as! Int
+        databaseRef.child("averageRatings").child(uid).observeSingleEventOfType(.Value, withBlock: { (snapshot) in
+            
+            var count = snapshot.value!["count"] as! Int
+            var sum = snapshot.value!["sum"]as! Int
             count += 1
             sum += rating
             databaseRef.child("averageRatings").child(uid).setValue(["sum": sum, "count": count])
@@ -289,6 +290,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
         }
         
         // delete rating
+        databaseRef.child("imageRatings").child(imageId).child(ratingKey).removeValue()
     }
     
     func showErrorForRating() {

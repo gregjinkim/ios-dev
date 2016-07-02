@@ -1,15 +1,9 @@
 Need to gather user info during sign-in and store in users database
 
 Have view controller populated when switching between views
+
 Show the other user’s information in view ratings
 	Added picture, still need age, location, occupation, race
 
-AccumulateAndDeleteRating
-	Take rating and add to average score
-	Delete the rating
-
 Create multiple swift files for each ViewController
-User multi-tabbed application
-	Upload photos
-	See ratings
-	Rate others
+
